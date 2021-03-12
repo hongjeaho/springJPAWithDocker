@@ -1,0 +1,38 @@
+plugins {
+    id "org.flywaydb.flyway" version "7.7.0"
+    id 'org.springframework.boot' version '2.4.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+flyway {
+    url = 'jdbc:mariadb://localhost:3366/demo'
+    user = 'root'
+    password = 'root'
+    encoding = 'UTF-8'
+    locations = ["filesystem:${file('src/migration/demo').absolutePath}"]
+    outOfOrder = true // 여러브랜치에서 서로 다른 날짜로 만들어도 작동하도록
+    validateOnMigrate = true //
+}

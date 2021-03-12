@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: false
+
+server:
+  port: 7070
+  tomcat:
+    uri-encoding: utf-8
+  servlet:
+    context-path: /
