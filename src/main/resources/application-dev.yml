@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mariadb://demoDB:3306/demo
+    url: jdbc:mariadb://mariadb:3306/demo
     password: root
     username: root
   flyway:

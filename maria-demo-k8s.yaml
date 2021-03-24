@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+  labels:
+    name: mysql
+spec:
+  selector:
+    app: mariadb
+  ports:
+    - port: 3306 #서비스를 클러스터 안에서 지정된 포트를 통해 내부적으로 노출한다. 즉, 서비스는 이 포트에 대해서 보일 수 있게 되며 이 포트로 보내진 요청은 서비스에 의해 선택된 파드로 전달된다.
+      targetPort: 3306 #이 포트는 파드로 전달되는 요청이 도달하는 포트이다. 서비스가 동작하기 위해서는 어플리케이션이 이 포트에 대해 네트워크 요청을 listening을 하고 있어야 한다.
+      protocol: TCP
+      name: mariadb
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-pv-claim
+  labels:
+    app: springdemo
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: demo
+          ports:
+            - containerPort: 3306
+              name: mriadb
+          volumeMounts:
+            - name: mariadb-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mariadb-persistent-storage
+          persistentVolumeClaim:
+            claimName: mariadb-pv-claim
