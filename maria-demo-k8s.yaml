@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mariadb
+  namespace: demo
   labels:
     name: mysql
 spec:
@@ -17,6 +18,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mariadb-pv-claim
+  namespace: demo
   labels:
     app: springdemo
 spec:
@@ -29,6 +31,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: demo
   name: mariadb
 spec:
   selector:
