@@ -30,6 +30,11 @@ helm uninstall --namespace istio-system kiali-server
 kubectl delete crd monitoringdashboards.monitoring.kiali.io
 ```
 
+## 1-4. Prometheus 설치
+```
+kubectl appy -f {ISTIO_HOME}/sample/addons/prometheus
+```
+
 ## 1-5. kiali 실행
 ```
 istioctl dashboard kiali
