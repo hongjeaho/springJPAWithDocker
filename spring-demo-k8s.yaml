@@ -33,9 +33,9 @@ metadata:
   labels:
     app: springdemo
 spec:
+  type: NodePort
   selector:
     app: springdemo
   ports:
-    - port: 7979
+    - port: 7070
       name: http
-  type: NodePort

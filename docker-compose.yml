@@ -16,17 +16,6 @@ services:
     restart: always
     networks:
       - demo
-  demo:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: demo
-    depends_on:
-      - mariadb
-    ports:
-      - 7979:7070
-    networks:
-      - demo
 
 networks:
   demo:

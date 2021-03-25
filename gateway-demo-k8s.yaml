@@ -12,11 +12,12 @@ spec:
         number: 80
         protocol: HTTP
       hosts:
-        - "demo.example.com"
+        - '*'
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: DestinationRule
 metadata:
+  namespace: demo
   name: springdemo-destination
 spec:
   host: springdemo
@@ -32,11 +33,14 @@ metadata:
   name: springdemo-vs
 spec:
   hosts:
-    - "demo.example.com"
+    - "*"
   gateways:
     - springdemo-gateway
   http:
-    - route:
+    - match:
+      - uri:
+          prefix: "/user"
+      route:
       - destination:
           host: springdemo
           subset: v1
