@@ -1,0 +1,43 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  namespace: demo
+  name: springdemo-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+    - port:
+        name: http
+        number: 80
+        protocol: HTTP
+      hosts:
+        - "demo.example.com"
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: springdemo-destination
+spec:
+  host: springdemo
+  subsets:
+    - name: v1
+      labels:
+        version: v1
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  namespace: demo
+  name: springdemo-vs
+spec:
+  hosts:
+    - "demo.example.com"
+  gateways:
+    - springdemo-gateway
+  http:
+    - route:
+      - destination:
+          host: springdemo
+          subset: v1
+      timeout: 0.5s
